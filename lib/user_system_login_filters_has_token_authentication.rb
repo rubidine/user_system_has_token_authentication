@@ -22,7 +22,8 @@ module UserSystemLoginFiltersHasTokenAuthentication
   private
   def lookup_user_with_token_authentication
     token = params[UserSystem.auth_token_name]
-    (token && User.verified.find_by_security_token(token)) || \
+    model = self.class.send(:user_model_for_this_controller)
+    (token && model.verified.find_by_security_token(token)) || \
       lookup_user_without_token_authentication
   end
 
